@@ -1,10 +1,10 @@
-import React from "react";
-import { Row, Col, ListGroup, Container, Nav } from "react-bootstrap";
+import React from "react"
+import { Row, Col, ListGroup, Container, Nav } from "react-bootstrap"
 
 const Footer = () => {
   return (
     <div>
-      <footer class="justify-content-center">
+      <footer className="justify-content-center">
         <Container>
           <Row xs={3} sm={3} md={3} lg={3}>
             <Col>
@@ -63,19 +63,19 @@ const Footer = () => {
             </Col>
             <Col>
               <div className="footer-logos">
-                <a class="btn btn-outline-dark" href="/#">
-                  <i class="fab fa-facebook-f"></i>
+                <a className="btn btn-outline-dark" href="/#">
+                  <i className="fab fa-facebook-f"></i>
                 </a>
 
-                <a class="btn btn-outline-dark" href="/#">
-                  <i class="fab fa-twitter"></i>
+                <a className="btn btn-outline-dark" href="/#">
+                  <i className="fab fa-twitter"></i>
                 </a>
 
-                <a class="btn btn-outline-dark" href="/#">
-                  <i class="fab fa-instagram"></i>
+                <a className="btn btn-outline-dark" href="/#">
+                  <i className="fab fa-instagram"></i>
                 </a>
-                <a class="btn btn-outline-dark" href="/#">
-                  <i class="fab fa-linkedin-in"></i>
+                <a className="btn btn-outline-dark" href="/#">
+                  <i className="fab fa-linkedin-in"></i>
                 </a>
               </div>
             </Col>
@@ -83,7 +83,7 @@ const Footer = () => {
         </Container>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

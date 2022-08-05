@@ -1,15 +1,13 @@
 import React from "react"
 import logo from "../assets/photos/Logo/Free Streams.jpg"
 import { Container, Navbar, Nav, Form } from "react-bootstrap"
-// import SearchResult from "../Pages/SearchResult"
 import { useNavigate } from "react-router-dom"
 
-const Header = (props) => {
+const AuthenticatedHeader = (props) => {
   let navigate = useNavigate()
 
   const searchForm = (e) => {
     e.preventDefault()
-
     if (e.target[0].value.length > 0) {
       fetch(
         "https://cjv805-backend.herokuapp.com/videos?title=" + e.target[0].value
@@ -42,9 +40,14 @@ const Header = (props) => {
               <Nav.Link href="/tv">TV Shows</Nav.Link>
             </Nav>
             <Nav className="mr-auto">
-              <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link href="/register">Register</Nav.Link>
-              <Form className="d-flex" onSubmit={searchForm}>
+              <Nav.Link href="/dashboard">My Dashboard</Nav.Link>
+              <Nav.Link
+                href="/"
+                onClick={() => window.sessionStorage.removeItem("userloggedIn")}
+              >
+                Logout
+              </Nav.Link>
+              <Form className="d-flex" action="/videos" onSubmit={searchForm}>
                 <input
                   type="text"
                   placeholder="Search"
@@ -60,4 +63,4 @@ const Header = (props) => {
   )
 }
 
-export default Header
+export default AuthenticatedHeader

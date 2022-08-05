@@ -1,68 +1,72 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { Col, Row, Container, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import { Col, Row, Container, Button } from "react-bootstrap"
+import AuthenticatedHeader from "../components/AuthenticatedHeader"
 
-const ShowDescription = () => {
-  const [show, setShow] = useState({
-    id: 0,
-    tvName: "",
-    year: "",
-    description: "",
-    genres: [],
-    seasons: 0,
-    episodes: 0,
-    picture: "",
-    rentPrice: "",
-    buyPrice: "",
-  });
+const ShowDescription = ({ setSearchedVideo }) => {
+  const [show, setTVShow] = useState([])
+  const [userloggedIn, setUserLoggedIn] = useState(null)
+  useEffect(() => {
+    const loggedInUser = sessionStorage.getItem("userloggedIn")
 
-  const { id } = useParams();
+    if (loggedInUser) {
+      setUserLoggedIn(loggedInUser)
+    }
+  }, [])
+
+  const { id } = useParams()
+
+  //console.log(id + " This is the ID")
 
   useEffect(() => {
-    fetch(`https://cjv-movie-api.herokuapp.com/tvshows/${id}`)
+    fetch(`https://cjv805-backend.herokuapp.com/videos/${id}`)
       .then((returnedData) => {
-        return returnedData.json();
+        return returnedData.json()
       })
       .then((data) => {
-        setShow(data);
+        //console.log(data.body[0])
+        setTVShow(data.body[0])
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
-
+        console.log(err)
+      })
+  }, [id])
   return (
     <div>
-      <Header />
+      {userloggedIn ? (
+        <AuthenticatedHeader setSearchedVideo={setSearchedVideo} />
+      ) : (
+        <Header setSearchedVideo={setSearchedVideo} />
+      )}
       <div className="details-page">
         <Container>
           <Row xs={1} sm={1} md={1} lg={2} xl={2}>
             <Col>
               <img
                 className="movie-poster"
-                src={show.picture}
-                alt={show.tvName}
+                src={show.poster}
+                alt={show.title}
               />
             </Col>
             <Col>
               <p className="title" style={{ color: "#A0BCF5" }}>
-                {show.tvName}&emsp;
-                <span class="text-info">({show.year})</span>
+                {show.title}&emsp;
+                <span className="text-info">({show.year})</span>
               </p>
 
-              <p className="genres">Genres: {show.genres.join(", ")}</p>
+              <p className="genres">Genres: {show.genres}</p>
               <p style={{ fontSize: "25px", color: "#A0BCF5" }}>Overview</p>
               <p className="description">{show.description}</p>
-              <p style={{ fontSize: "20px", color: "#A0BCF5" }}>
+              {/* <p style={{ fontSize: "20px", color: "#A0BCF5" }}>
                 Number of Seasons
               </p>
-              <p className="seasons">{show.seasons}</p>
+              <p className="seasons">{show.seasons}</p> */}
               <p style={{ fontSize: "20px", color: "#A0BCF5" }}>
                 Number of Episodes
               </p>
-              <p className="episodes">{show.episodes}</p>
+              <p className="episodes">{show.runtime}</p>
 
               <Button variant="primary" style={{ marginTop: "20px" }}>
                 Rent: {show.rentPrice}
@@ -76,7 +80,7 @@ const ShowDescription = () => {
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default ShowDescription;
+export default ShowDescription

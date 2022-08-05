@@ -237,3 +237,15 @@ footer h5{
 .details-page button:first-of-type{
     margin-right: 35px;
 }
+
+.dashboard p:first-of-type{
+    margin-top:200px;
+}
+
+.dashboard p:last-of-type{
+    margin-bottom: 210px;
+}
+
+.dashboard p{
+    text-align: center;
+}

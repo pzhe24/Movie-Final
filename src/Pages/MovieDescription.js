@@ -1,59 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { Col, Row, Container, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import { Col, Row, Container, Button } from "react-bootstrap"
+import AuthenticatedHeader from "../components/AuthenticatedHeader"
 
-const MovieDescription = () => {
-  const [movie, setMovie] = useState({
-    id: 0,
-    movieName: "",
-    year: "",
-    description: "",
-    genres: [],
-    length: "",
-    picture: "",
-    rentPrice: "",
-    buyPrice: "",
-  });
+const MovieDescription = ({ setSearchedVideo }) => {
+  const [movie, setMovie] = useState([])
+  const [userloggedIn, setUserLoggedIn] = useState(null)
+  useEffect(() => {
+    const loggedInUser = sessionStorage.getItem("userloggedIn")
 
-  const { id } = useParams();
+    if (loggedInUser) {
+      setUserLoggedIn(loggedInUser)
+    }
+  }, [])
+
+  const { id } = useParams()
 
   useEffect(() => {
-    fetch(`https://cjv-movie-api.herokuapp.com/movies/${id}`)
+    fetch(`https://cjv805-backend.herokuapp.com/videos/${id}`)
       .then((returnedData) => {
-        return returnedData.json();
+        return returnedData.json()
       })
       .then((data) => {
-        setMovie(data);
+        //console.log(data.body[0])
+        setMovie(data.body[0])
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
+        console.log(err)
+      })
+  }, [id])
 
   return (
     <div>
-      <Header />
+      {userloggedIn ? (
+        <AuthenticatedHeader setSearchedVideo={setSearchedVideo} />
+      ) : (
+        <Header setSearchedVideo={setSearchedVideo} />
+      )}
       <div className="details-page">
         <Container style={{ paddingBottom: "65px" }}>
           <Row xs={1} sm={1} md={1} lg={2} xl={2}>
             <Col>
               <img
                 className="movie-poster"
-                src={movie.picture}
-                alt={movie.tvName}
+                src={movie.poster}
+                alt={movie.title}
               />
             </Col>
             <Col>
               <p className="title" style={{ color: "#A0BCF5" }}>
-                {movie.movieName}&emsp;
-                <span class="text-info">({movie.year})</span>
+                {movie.title}&emsp;
+                <span className="text-info">({movie.year})</span>
               </p>
-              <p className="genres">
-                Genres: {movie.genres.join(", ")}&emsp;&emsp;Runtime:{" "}
-                {movie.length}
-              </p>
+              <p className="genres">Genres: {movie.genres}</p>
+              <p className="genres">Runtime: {movie.runtime}</p>
               <p style={{ fontSize: "25px", color: "#A0BCF5" }}>Overview</p>
               <p className="description">{movie.description}</p>
 
@@ -69,7 +71,7 @@ const MovieDescription = () => {
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default MovieDescription;
+export default MovieDescription
